@@ -1,5 +1,6 @@
 // src\pages\index.js
 import Head from "next/head" 
+const apiKey = process.env.apiKey
 export default function Index() {
   return (
     <div className="s">
