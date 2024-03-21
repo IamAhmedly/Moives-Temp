@@ -1,14 +1,13 @@
-//Components/navBar.jsx
-"use client"
-import React, { useState, useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
-const Navbar = () => {
-  const [genres, setGenres] = useState([])
-  const [movies, setMovies] = useState([])
-  const [moviesMenuOpen, setMoviesMenuOpen] = useState(false)
-  const [genresMenuOpen, setGenresMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
+// src\app\components\navBar.jsx
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+export default function Navbar() {
+  const [genres, setGenres] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [moviesMenuOpen, setMoviesMenuOpen] = useState(false);
+  const [genresMenuOpen, setGenresMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const obj = {
     genres: [
@@ -89,33 +88,33 @@ const Navbar = () => {
         name: "Western",
       },
     ],
-  }
-  const Movies = ["Top Rate", "Popular", "Latest", "Now playing", "Upcoming"]
+  };
+  const Movies = ["Top Rate", "Popular", "Latest", "Now playing", "Upcoming"];
 
   // Fetch genres from API
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await fetch("API_URL")
-        const data = await response.json()
-        setGenres(data.genres)
+        const response = await fetch("API_URL");
+        const data = await response.json();
+        setGenres(data.genres);
       } catch (error) {
-        console.error("Error fetching genres:", error)
+        console.error("Error fetching genres:", error);
       }
-    }
+    };
 
-    fetchGenres()
-    setGenres(obj.genres)
-    setMovies(Movies)
-  }, [])
+    fetchGenres();
+    setGenres(obj.genres);
+    setMovies(Movies);
+  }, []);
 
-  const handleMoviesMenuSelect = (option) => {}
-  const handleGenresMenuSelect = (option) => {}
+  const handleMoviesMenuSelect = (option) => {};
+  const handleGenresMenuSelect = (option) => {};
 
   // Function to handle search
   const handleSearch = (e) => {
-    setSearchQuery(e.target.value)
-  }
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <nav className=" navbar flex items-center justify-between bg-gray-800 p-4">
@@ -145,7 +144,7 @@ const Navbar = () => {
           {genresMenuOpen && (
             <div className="flex flex-col justify-start absolute top-full bg-gray-800 rounded-lg py-2 mt-1 w-48">
               {genres.map((item, index) => {
-                const path = "/?genres=" + item.id
+                const path = "/?genres=" + item.id;
                 return (
                   <Link
                     className="text-left p-1"
@@ -155,7 +154,7 @@ const Navbar = () => {
                   >
                     {item.name}
                   </Link>
-                )
+                );
               })}
             </div>
           )}
@@ -170,7 +169,7 @@ const Navbar = () => {
           {moviesMenuOpen && (
             <div className="flex flex-col  absolute top-full bg-gray-800 rounded-lg py-2 mt-1 w-48">
               {Movies.map((item, index) => {
-                const path = "/Movies?id=" + index
+                const path = "/Movies?id=" + index;
                 return (
                   <Link
                     className="text-left p-1"
@@ -180,7 +179,7 @@ const Navbar = () => {
                   >
                     {item}
                   </Link>
-                )
+                );
               })}
             </div>
           )}
@@ -201,7 +200,5 @@ const Navbar = () => {
         />
       </div>
     </nav>
-  )
+  );
 }
-
-export default Navbar
