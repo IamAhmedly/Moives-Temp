@@ -1,111 +1,44 @@
+"use client";
 // src\app\components\navBar.jsx
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 export default function Navbar() {
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
   const [moviesMenuOpen, setMoviesMenuOpen] = useState(false);
   const [genresMenuOpen, setGenresMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const obj = {
-    genres: [
-      {
-        id: 28,
-        name: "Action",
-      },
-      {
-        id: 12,
-        name: "Adventure",
-      },
-      {
-        id: 16,
-        name: "Animation",
-      },
-      {
-        id: 35,
-        name: "Comedy",
-      },
-      {
-        id: 80,
-        name: "Crime",
-      },
-      {
-        id: 99,
-        name: "Documentary",
-      },
-      {
-        id: 18,
-        name: "Drama",
-      },
-      {
-        id: 10751,
-        name: "Family",
-      },
-      {
-        id: 14,
-        name: "Fantasy",
-      },
-      {
-        id: 36,
-        name: "History",
-      },
-      {
-        id: 27,
-        name: "Horror",
-      },
-      {
-        id: 10402,
-        name: "Music",
-      },
-      {
-        id: 9648,
-        name: "Mystery",
-      },
-      {
-        id: 10749,
-        name: "Romance",
-      },
-      {
-        id: 878,
-        name: "Science Fiction",
-      },
-      {
-        id: 10770,
-        name: "TV Movie",
-      },
-      {
-        id: 53,
-        name: "Thriller",
-      },
-      {
-        id: 10752,
-        name: "War",
-      },
-      {
-        id: 37,
-        name: "Western",
-      },
-    ],
+  const url = "https://api.themoviedb.org/3/genre/movie/list";
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: "Bearer " + apiKey,
+    },
   };
-  const Movies = ["Top Rate", "Popular", "Latest", "Now playing", "Upcoming"];
-
-  // Fetch genres from API
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const response = await fetch("API_URL");
-        const data = await response.json();
-        setGenres(data.genres);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
+  function getGenresRequest() {
+    const Movies = {
+      now_playing: "Now playing",
+      popular: "Popular",
+      top_rated: "Top Rate",
+      discover: "Latest",
+      upcoming: "Upcoming",
     };
 
-    fetchGenres();
-    setGenres(obj.genres);
     setMovies(Movies);
+    fetch(url, options)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json) {
+          setGenres(json.genres);
+        }
+      })
+      .catch((err) => console.error("error:" + err));
+  }
+  useEffect(() => {
+    getGenresRequest();
   }, []);
 
   const handleMoviesMenuSelect = (option) => {};
@@ -118,8 +51,6 @@ export default function Navbar() {
 
   return (
     <nav className=" navbar flex items-center justify-between bg-gray-800 p-4">
-      {}
-
       <div className="flex items-center space-x-4">
         <Image
           src="/imgs/team9.jpg"
@@ -144,7 +75,7 @@ export default function Navbar() {
           {genresMenuOpen && (
             <div className="flex flex-col justify-start absolute top-full bg-gray-800 rounded-lg py-2 mt-1 w-48">
               {genres.map((item, index) => {
-                const path = "/?genres=" + item.id;
+                const path = "/Movies?id=" + item.id;
                 return (
                   <Link
                     className="text-left p-1"
@@ -168,16 +99,16 @@ export default function Navbar() {
           </button>
           {moviesMenuOpen && (
             <div className="flex flex-col  absolute top-full bg-gray-800 rounded-lg py-2 mt-1 w-48">
-              {Movies.map((item, index) => {
-                const path = "/Movies?id=" + index;
+              {Object.entries(movies).map(([key, value], index) => {
+                const path = "/Movies?id=" + key;
                 return (
                   <Link
                     className="text-left p-1"
                     href={path}
                     key={index}
-                    onClick={() => handleMoviesMenuSelect(item)}
+                    onClick={() => handleMoviesMenuSelect(key)}
                   >
-                    {item}
+                    {value}
                   </Link>
                 );
               })}
