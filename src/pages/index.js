@@ -43,8 +43,6 @@ export default function Index() {
         <title>Home Page </title>
       </Head>
       <div>
-        <h1>Welcome to the Home Page</h1>
-
         {/* <Image
           src={assetsUrl+item.backdrop_path}
           alt="dvf"
