@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function Index() {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  console.log(apiKey);
   const [movies, setMovies] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const url =
@@ -20,12 +21,13 @@ export default function Index() {
       Authorization: "Bearer " + apiKey,
     },
   };
+  console.log(apiKey);
   function getMovieRequest() {
     fetch(url, options)
       .then((res) => res.json())
       .then((json) => {
         // console.log(options.headers);
-        // console.log(apiKey);
+        console.log(apiKey);
         if (json) {
           setMovies(json.results);
         }

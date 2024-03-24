@@ -11,8 +11,10 @@ export default function Index() {
 
   useEffect(() => {
     if (!id) return;
-
+    
     const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+    console.log("=============================");
+    console.log(apiKey);
     const Movies = [
       "now_playing",
       "popular",
