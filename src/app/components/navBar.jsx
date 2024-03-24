@@ -53,7 +53,7 @@ export default function Navbar() {
     <nav className=" navbar flex items-center justify-between bg-gray-800 p-4">
       <div className="flex items-center space-x-4">
         <Image
-          src="/imgs/team9.jpg"
+          src="/imgs/team9_a.png"
           alt="logo"
           className="w-24"
           width={64}

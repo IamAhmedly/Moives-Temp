@@ -37,7 +37,7 @@ export default function Index() {
   }, []);
 
   return (
-    <div>
+    <div className="bg-gray-800 p-6 text-surface" >
       <Head>
         <title>Actors Page </title>
       </Head>
@@ -47,22 +47,24 @@ export default function Index() {
             const path = "/Actors/" + item.id;
             return (
               <div
-                className="card w-52 h-[350px] bg-gray-100 m-4 text-black"
+                className="m-1 p-bl-50 p-br-50 basis-1/4 rounded-t-lg rounded-b-lg bg-gray-900  shadow-secondary-1 dark:bg-surface-dark"
                 key={item.id}
               >
                 <Link
-                  className="text-left  text-blue-500"
+                  className="text-center p-1 text-blue-500 shadow-lg justify-center"
                   href={path}
                   key={index}
                 >
-                  <div className="w-52 h-[312px]">
-                    <img
-                      src={assetsUrl + item.profile_path}
-                      alt="backdrop_path"
-                      className="w-52 h-auto"
-                    />
+                  <div className="m-b-2 dark:bg-surface-dark size-auto">
+                    <div className="flex items-center justify-center">
+                      <img
+                        src={assetsUrl + item.profile_path}
+                        alt="backdrop_path"
+                        className="w-150 h-150 rounded-t-full rounded-b-full shadow-b-3xl"
+                      />
+                    </div>
                   </div>
-                  {item.name}
+                  <div  className="text-center font-bold pt-2">{item.name}</div>
                 </Link>
               </div>
             );

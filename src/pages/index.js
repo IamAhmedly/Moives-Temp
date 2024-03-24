@@ -40,7 +40,7 @@ export default function Index() {
   }, [searchValue]);
 
   return (
-    <div className="s">
+    <div className="bg-gray-800 p-6 text-surface">
       <Head>
         <title>Home Page </title>
       </Head>
@@ -59,40 +59,80 @@ export default function Index() {
                     className="w-52 h-auto"
                   />
                 </div> */}
-        <div className="flex  flex-wrap">
+        <div className="flex flex-wrap">
           {movies.map((item, index) => {
             const path = "/Movies/" + item.id;
             return (
               <div
-                className="card w-52 h-[700px] bg-gray-100 m-4 text-black"
+                // this is the single movie container rounded-tl-lg rounded-br-lg
+                className="m-1 p-bl-50 p-br-50 basis-1/4 rounded-t-lg rounded-b-lg bg-gray-900  shadow-secondary-1 dark:bg-surface-dark "
                 key={item.id}
               >
-                <div className="w-52 h-[312px]">
+                <div className="m-b-2 dark:bg-surface-dark size-auto">
                   <img
                     src={assetsUrl + item.poster_path}
                     alt="backdrop_path"
-                    className="w-52 h-auto"
+                    className="rounded-t-lg rounded-b-full shadow-b-3xl"
                   />
                 </div>
 
-                <div className="h-3">{item.adult && <span> +18</span>}</div>
+                <div className="h-3 text-center">{item.adult && <span> +18</span>}</div>
 
                 <Link
-                  className="text-left p-1 text-blue-500"
+                  className="text-center p-1 text-blue-500 shadow-lg justify-center"
                   href={path}
                   key={index}
                 >
                   {item.title}
                 </Link>
-                <div>genre ids:{item.genre_ids} </div>
-                <div> id :{item.id} </div>
-                <div>original_language:{item.original_language} </div>
-                <div>original_title:{item.original_title} </div>
-                <div>popularity:{item.popularity} </div>
-                <div>release date:{item.release_date} </div>
-                <div>overview </div>
-                <div> {item.overview} </div>
-                <div>release date:{item.release_date} </div>
+                <div className="m-2">
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold from-neutral-300 shadow-lg">Genre ID:   </div>
+                    <div className="inline-block text-right font-thin ">{item.genre_ids} </div> 
+                  </div>
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold shadow-lg">ID:           </div>
+                    <div className="inline-block text-right font-thin ">{item.id}</div>
+                  </div>
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold shadow-lg">Original_language: </div>
+                    <div className="inline-block text-right font-thin ">{item.original_language}</div>
+                  </div>
+
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold shadow-lg">Original_title: </div>
+                    <div className="inline-block text-right font-thin ">{item.original_title}</div>
+                  </div>
+
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold shadow-lg">Popularity: </div>
+                    <div className="inline-block text-right font-thin ">{item.popularity}</div>
+                  </div>
+
+
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold shadow-lg">Release date: </div>
+                    <div className="inline-block text-right font-thin ">{item.release_date}</div>
+                  </div>
+
+
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left text-white font-bold shadow-lg">Overview: </div>
+                    <div className="inline-block text-left font-thin ">{item.overview}</div>
+                  </div>
+
+
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold">  </div>
+                    <div className="inline-block text-right font-thin "></div>
+                  </div>
+
+
+                  <div className="flex justify-between  text-white font-bold">
+                    <div className="text-left  text-white font-bold shadow-lg">release date: </div>
+                    <div className="inline-block text-right font-thin ">{item.release_date}</div>
+                  </div>
+                </div>
               </div>
             );
           })}
