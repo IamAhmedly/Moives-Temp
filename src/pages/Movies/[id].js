@@ -14,42 +14,24 @@ export default function Movie() {
   const [movie, setMovie] = useState({});
   const [directors, setDirectors] = useState([]);
   const [cast, setCast] = useState([]);
-
-  const Movie = {
-    adult: false,
-    backdrop_path: null,
-    belongs_to_collection: {
-      id: 87096,
-      name: "Avatar Collection",
-      poster_path: "/uO2yU3QiGHvVp0L5e5IatTVRkYk.jpg",
-      backdrop_path: "/gxnvX9kF7RRUQYvB52dMLPgeJkt.jpg",
-    },
-    budget: 500000000,
-
-    homepage: "https://www.avatar.com/movies",
-    id: 216527,
-    imdb_id: "tt3095356",
-    original_language: "en",
-    original_title: "Avatar 4",
-    overview: "",
-    popularity: 33.31,
-    poster_path: "/xGcd3ob2DWC3TmlVhnJg1RLyTGi.jpg",
-
-    release_date: "2029-12-20",
-    revenue: 0,
-    runtime: 0,
-
-    status: "In Production",
-    tagline: "",
-    title: "Avatar 4",
-    video: false,
-    vote_average: 0,
-    vote_count: 0,
-  };
+  const [similar, setSimilar] = useState([]);
+  const [trailers, setTrailers] = useState([]);
 
   useEffect(() => {
-    if (!id) return;
+    const Movie = {
+      id: 216527,
+      original_language: "en",
+      overview: "",
+      poster_path: "/xGcd3ob2DWC3TmlVhnJg1RLyTGi.jpg",
+      release_date: "2029-12-20",
+      runtime: 0,
+      title: "Avatar 4",
+      vote_average: 0,
+      vote_count: 0,
+    };
+
     setMovie(Movie);
+    if (!id) return;
     const apiKey = process.env.NEXT_PUBLIC_API_KEY;
     const url =
       "https://api.themoviedb.org/3/movie/" +
@@ -69,6 +51,7 @@ export default function Movie() {
         .then((json) => {
           if (json) {
             setMovie(json);
+            // l(json);
             // director
             const getDirectorsFromCrew = (crew) => {
               return crew
@@ -89,11 +72,41 @@ export default function Movie() {
             };
             const Casts = getCast(json.credits.cast);
             setCast(Casts);
-            l(cast); 
           }
         })
         .catch((err) => console.error("error:" + err));
+        // Related
+      fetch(
+        "https://api.themoviedb.org/3/movie/" + id + "/recommendations",
+        options
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          if (json) {
+            setSimilar(json.results);
+            // l(json);
+          }
+        })
+        .catch((err) => console.error("error:" + err));
+        //Trailers
+        fetch(
+          "https://api.themoviedb.org/3/movie/" + id + "/videos",
+          options
+        )
+          .then((res) => res.json())
+          .then((json) => {
+            if (json) {
+              setTrailers(json.results.filter(item=>item.type == "Trailer" ).slice(0, 6));
+              // l(json);
+              l(trailers); 
+              // json.results.map(item=>l(  item.type+item.size))
+            }
+          })
+          .catch((err) => console.error("error:" + err));
+
     }
+    
+
     getMovie();
   }, [id]);
 
@@ -102,7 +115,7 @@ export default function Movie() {
       <Head>
         <title>Movie id </title>
       </Head>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-left">
         <div className="flex flex-row ">
           <div className=" flex-1 w-[20%]">
             <div className="poster_card border border-amber-50 rounded-xl border-solid overflow-hidden m-2">
@@ -137,33 +150,76 @@ export default function Movie() {
             </h1>
             <h1 className=" ">Cast : </h1>
 
-            <h1 className="flex ">
+            <h3 className="flex ">
               {cast.map((actor) => {
                 const href = "/Actors/" + actor.id;
-                return ( 
-                  <div className="flex flex-col m-1" key={actor.cast_id}>
+                return (
+                  <div
+                    className="flex flex-col m-1 min-w-[140px]  w-[140px]"
+                    key={actor.cast_id}
+                  >
                     <Link href={href} className=" ">
-                      {actor.name} ,
+                      {actor.name}
                     </Link>
-                   {actor.profile_path? <img
-                      src={assetsUrl + actor.profile_path}
-                      width="70" title={"As: "+actor.character}
-                      className="inline"
-                    />:<img width="70" src="/imgs/ph.jpg" title={"As: "+actor.character}/>}
+                    {actor.profile_path ? (
+                      <img
+                        src={assetsUrl + actor.profile_path}
+                        width="70"
+                        title={"As: " + actor.character}
+                        className="inline"
+                      />
+                    ) : (
+                      <img
+                        width="70"
+                        src="/imgs/ph.jpg"
+                        title={"As: " + actor.character}
+                      />
+                    )}
                   </div>
                 );
               })}
-            </h1>
+            </h3>
           </div>
+        </div>
+        <div className="flex flex-col items-start">
+          <h1>Related Movies</h1>
+          <div className="flex ">
+            {similar.slice(0, 6).map((item) => {
+              const href = "/Movies/" + item.id;
+              return (
+                <div key={item.id}>
+                  <Link href={href} className=" ">
+                    {item.poster_path ? (
+                      <img
+                        src={assetsUrl + item.poster_path}
+                        width="70"
+                        title={item.name}
+                      />
+                    ) : (
+                      <img src="/imgs/ph.jpg" width="70" title={item.name} />
+                    )}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div>
+          <h1>Trailer</h1>
+          <iframe
+  width="560"
+  height="315"
+  src={trailers[0]?"https://www.youtube.com/embed/"+trailers[0].key:''}
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+  autoPlay
+></iframe>
         </div>
         <h1>Movie id = {id}</h1>
         <pre className="whitespace-pre-wrap">
-           
-          10. A related movies section which includes at least five related
-          movies (Use the API for this)
-          <br />
-          11. A trailer section that has the movie trailer from youtube
-          <br />
+          
           12. The movie production company name and logo.
           <br />
           2. Functionality:
