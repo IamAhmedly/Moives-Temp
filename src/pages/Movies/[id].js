@@ -89,7 +89,7 @@ export default function Movie() {
             };
             const Casts = getCast(json.credits.cast);
             setCast(Casts);
-             
+            l(cast); 
           }
         })
         .catch((err) => console.error("error:" + err));
@@ -140,16 +140,16 @@ export default function Movie() {
             <h1 className="flex ">
               {cast.map((actor) => {
                 const href = "/Actors/" + actor.id;
-                return (
-                  <div className="flex flex-col" key={actor.id}>
+                return ( 
+                  <div className="flex flex-col m-1" key={actor.cast_id}>
                     <Link href={href} className=" ">
                       {actor.name} ,
                     </Link>
-                    <img
+                   {actor.profile_path? <img
                       src={assetsUrl + actor.profile_path}
                       width="70" title={"As: "+actor.character}
                       className="inline"
-                    />
+                    />:<img width="70" src="/imgs/ph.jpg" title={"As: "+actor.character}/>}
                   </div>
                 );
               })}
@@ -158,12 +158,7 @@ export default function Movie() {
         </div>
         <h1>Movie id = {id}</h1>
         <pre className="whitespace-pre-wrap">
-          <br />
-          8. Overview of the movie
-          <br />
-          9. The main 5 actors of the movies in the credit section (Use the API
-          for this)
-          <br />
+           
           10. A related movies section which includes at least five related
           movies (Use the API for this)
           <br />
