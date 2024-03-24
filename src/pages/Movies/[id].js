@@ -51,7 +51,7 @@ export default function Movie() {
         .then((json) => {
           if (json) {
             setMovie(json);
-            // l(json);
+            l(json);
             // director
             const getDirectorsFromCrew = (crew) => {
               return crew
@@ -75,7 +75,7 @@ export default function Movie() {
           }
         })
         .catch((err) => console.error("error:" + err));
-        // Related
+      // Related
       fetch(
         "https://api.themoviedb.org/3/movie/" + id + "/recommendations",
         options
@@ -88,24 +88,21 @@ export default function Movie() {
           }
         })
         .catch((err) => console.error("error:" + err));
-        //Trailers
-        fetch(
-          "https://api.themoviedb.org/3/movie/" + id + "/videos",
-          options
-        )
-          .then((res) => res.json())
-          .then((json) => {
-            if (json) {
-              setTrailers(json.results.filter(item=>item.type == "Trailer" ).slice(0, 6));
-              // l(json);
-              l(trailers); 
-              // json.results.map(item=>l(  item.type+item.size))
-            }
-          })
-          .catch((err) => console.error("error:" + err));
-
+      //Trailers
+      fetch("https://api.themoviedb.org/3/movie/" + id + "/videos", options)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json) {
+            setTrailers(
+              json.results.filter((item) => item.type == "Trailer").slice(0, 6)
+            );
+            // l(json);
+            l(trailers);
+            // json.results.map(item=>l(  item.type+item.size))
+          }
+        })
+        .catch((err) => console.error("error:" + err));
     }
-    
 
     getMovie();
   }, [id]);
@@ -113,7 +110,7 @@ export default function Movie() {
   return (
     <div>
       <Head>
-        <title>Movie id </title>
+        <title>{movie.title}</title>
       </Head>
       <div className="flex flex-col justify-center items-left">
         <div className="flex flex-row ">
@@ -207,30 +204,46 @@ export default function Movie() {
         <div>
           <h1>Trailer</h1>
           <iframe
-  width="560"
-  height="315"
-  src={trailers[0]?"https://www.youtube.com/embed/"+trailers[0].key:''}
-  title="YouTube video player"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-  autoPlay
-></iframe>
+            width="560"
+            height="315"
+            src={
+              trailers[0]
+                ? "https://www.youtube.com/embed/" + trailers[0].key
+                : ""
+            }
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            autoPlay
+          ></iframe>
         </div>
-        <h1>Movie id = {id}</h1>
-        <pre className="whitespace-pre-wrap">
-          
-          12. The movie production company name and logo.
-          <br />
-          2. Functionality:
-          <br />
-          1. Clicking an actor in the main actors should go to the single actor
-          page.
-          <br />
-          2. Clicking on a movie in the related movies section should take you
-          to the Single movie page (#3)
-          <br />
-        </pre>
+        <div>
+          <h1>Production</h1>
+          <div className="flex items-center">
+            {movie.production_companies
+              ? movie.production_companies.map((item) => {
+                  const bg = item.logo_path
+                    ? assetsUrl + item.logo_path
+                    : "/imgs/ph2.jpg";
+                  return (
+                    // <div
+                    //   className={   " bg-contain bg-no-repeat w-[100px] h-[50px] " + bg   }
+                    //
+
+                    //   key={item.id}
+                    // />
+                    <img
+                      key={item.id}
+                      className="w-[100px] h-min"
+                      src={bg}
+                      title={item.name}
+                    />
+                  );
+                })
+              : ""}
+          </div>
+        </div>
       </div>
     </div>
   );
