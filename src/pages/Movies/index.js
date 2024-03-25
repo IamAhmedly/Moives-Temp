@@ -70,7 +70,7 @@ export default function Index() {
               >
                 <div className="w-52 h-[312px]">
                   <img
-                    src={assetsUrl + item.poster_path}
+                    src={ item.poster_path ? assetsUrl + item.poster_path:'/imgs/placeholder.jpg'}
                     alt="backdrop_path"
                     className="w-52 h-auto"
                   />

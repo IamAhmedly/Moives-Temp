@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Index() {
+  const l = console.log;
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const [movies, setMovies] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -67,7 +68,9 @@ export default function Index() {
               >
                 <div className="w-52 h-[312px]">
                   <img
-                    src={assetsUrl + item.poster_path}
+                    src={
+                      item.poster_path ? assetsUrl + item.poster_path : "/imgs/placeholder.jpg"
+                    }
                     alt="backdrop_path"
                     className="w-52 h-auto"
                   />

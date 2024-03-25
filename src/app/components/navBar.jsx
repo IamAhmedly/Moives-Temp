@@ -5,19 +5,26 @@ import Link from "next/link";
 import Image from "next/image";
 export default function Navbar() {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  const [genres, setGenres] = useState([]);
+  
   const [movies, setMovies] = useState([]);
   const [moviesMenuOpen, setMoviesMenuOpen] = useState(false);
   const [genresMenuOpen, setGenresMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const url = "https://api.themoviedb.org/3/genre/movie/list";
-  const options = {
+
+  const [genres, setGenres] = useState([]); // 1
+
+  const url = "https://api.themoviedb.org/3/genre/movie/list"; //2
+  
+  
+  const options = {  //3
     method: "GET",
     headers: {
       accept: "application/json",
       Authorization: "Bearer " + apiKey,
     },
   };
+
+
   function getGenresRequest() {
     const Movies = {
       now_playing: "Now playing",
@@ -28,21 +35,30 @@ export default function Navbar() {
     };
 
     setMovies(Movies);
+
     fetch(url, options)
       .then((res) => res.json())
       .then((json) => {
         if (json) {
           setGenres(json.genres);
+          console.log(json)
         }
       })
       .catch((err) => console.error("error:" + err));
   }
+
+
   useEffect(() => {
     getGenresRequest();
   }, []);
 
+  
+
   const handleMoviesMenuSelect = (option) => {};
-  const handleGenresMenuSelect = (option) => {};
+  const handleGenresMenuSelect = (option) => {
+
+
+  };
 
   // Function to handle search
   const handleSearch = (e) => {
@@ -75,11 +91,11 @@ export default function Navbar() {
           {genresMenuOpen && (
             <div className="flex flex-col justify-start absolute top-full bg-gray-800 rounded-lg py-2 mt-1 w-48">
               {genres.map((item, index) => {
-                const path = "/Movies?id=" + item.id;
+                
                 return (
                   <Link
                     className="text-left p-1"
-                    href={path}
+                    href={"/Movies?id=" + item.id}
                     key={index}
                     onClick={() => handleGenresMenuSelect(item.id)}
                   >

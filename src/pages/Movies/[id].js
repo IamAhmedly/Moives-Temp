@@ -108,11 +108,11 @@ export default function Movie() {
   }, [id]);
 
   return (
-    <div>
+    <div className="h-[100%]">
       <Head>
         <title>{movie.title}</title>
       </Head>
-      <div className="flex flex-col justify-center items-left">
+      <div className="flex flex-col justify-start items-left">
         <div className="flex flex-row ">
           <div className=" flex-1 w-[20%]">
             <div className="poster_card border border-amber-50 rounded-xl border-solid overflow-hidden m-2">
